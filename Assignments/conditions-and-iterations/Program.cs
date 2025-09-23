@@ -20,12 +20,11 @@
 
 string parsedString = "";
 int parsedChoice = 0;
-ArrayList inputExceptions = [null, "", " "];
 List<char> charList = new List<char>();
 
 Console.Write("Please enter some text input: ");
 
-getInput("text", inputExceptions, ref parsedString, ref parsedChoice);
+getInput("text", ref parsedString, ref parsedChoice);
 
 Console.WriteLine($"\nYou entered: {parsedString}");
 Console.WriteLine("Choose a method to reverse the string:");
@@ -37,7 +36,7 @@ Console.WriteLine("4. Recursion");
 
 Console.Write("\nEnter your choice (1-4): ");
 
-getInput("number", inputExceptions, ref parsedString, ref parsedChoice);
+getInput("number", ref parsedString, ref parsedChoice);
 
 Console.WriteLine($"\nYou entered: {parsedChoice}");
 Console.ReadKey();
@@ -50,39 +49,39 @@ parsedString = parsedString.Substring(0, parsedString.Length - 1).ToLower() + pa
 // Not pretty, but it is good enough for such a simple program
 if (parsedChoice == 1)
 {
-    for (int i = 0; i < parsedString.Length; i++)
-    {
-        charList.Add(parsedString[parsedString.Length - 1 - i]);
-    }
-    Console.WriteLine(new string(charList.ToArray()));
+	for (int i = 0; i < parsedString.Length; i++)
+	{
+		charList.Add(parsedString[parsedString.Length - 1 - i]);
+	}
+	Console.WriteLine(new string(charList.ToArray()));
 }
 else if (parsedChoice == 2)
 {
-    while (charList.Count != parsedString.Length)
-    {
-        charList.Add(parsedString[parsedString.Length - 1 - charList.Count]);
-    }
-    Console.WriteLine(new string(charList.ToArray()));
+	while (charList.Count != parsedString.Length)
+	{
+		charList.Add(parsedString[parsedString.Length - 1 - charList.Count]);
+	}
+	Console.WriteLine(new string(charList.ToArray()));
 }
 else if (parsedChoice == 3)
 {
-    do
-    {
-        charList.Add(parsedString[parsedString.Length - 1 - charList.Count]);
-    }
-    while (charList.Count != parsedString.Length);
-    Console.WriteLine(new string(charList.ToArray()));
+	do
+	{
+		charList.Add(parsedString[parsedString.Length - 1 - charList.Count]);
+	}
+	while (charList.Count != parsedString.Length);
+	Console.WriteLine(new string(charList.ToArray()));
 }
 else if (parsedChoice == 4)
 {
-    if (parsedString != null)
-    {
-        Console.WriteLine(ReverseRecursion(parsedString));
-    }
+	if (parsedString != null)
+	{
+		Console.WriteLine(ReverseRecursion(parsedString));
+	}
 }
 else
 {
-    Console.WriteLine("Invalid choice. Please restart the program and choose a number between 1 and 4.");
+	Console.WriteLine("Invalid choice. Please restart the program and choose a number between 1 and 4.");
 }
 Console.ReadLine();
 
@@ -90,40 +89,42 @@ Console.ReadLine();
 // Source: https://www.geeksforgeeks.org/reverse-string-using-recursion/
 static string ReverseRecursion(string str)
 {
-    if (str.Length == 0)
-    {
-        return str;
-    }
-    return ReverseRecursion(str.Substring(1)) + str[0];
+	if (str.Length == 0)
+	{
+		return str;
+	}
+	return ReverseRecursion(str.Substring(1)) + str[0];
 }
 
 // Method to get and validate user input
-static void getInput(string option, ArrayList inputExceptions, ref string parsedString, ref int parsedChoice)
+static void getInput(string option, ref string parsedString, ref int parsedChoice)
 {
-    string? userInput = "";
-    bool validInput = false;
-    do
-    {
-        userInput = Console.ReadLine();
+	string? userInput = "";
+	bool validInput = false;
+	ArrayList inputExceptions = [null, "", " "];
 
-        if (option == "text")
-        {
-            validInput = !inputExceptions.Contains(userInput);
-            if (validInput)
-            {
-                parsedString = userInput ?? "";
-            }
-        }
-        else if (option == "number")
-        {
-            validInput = Int32.TryParse(userInput, out parsedChoice);
-            validInput = validInput && (parsedChoice >= 1 && parsedChoice <= 4);
-        }
+	do
+	{
+		userInput = Console.ReadLine();
 
-        if (!validInput)
-        {
-            Console.Write("Invalid input. Try again: ");
-        }
-    }
-    while (!validInput);
+		if (option == "text")
+		{
+			validInput = !inputExceptions.Contains(userInput);
+			if (validInput)
+			{
+				parsedString = userInput ?? "";
+			}
+		}
+		else if (option == "number")
+		{
+			validInput = Int32.TryParse(userInput, out parsedChoice);
+			validInput = validInput && (parsedChoice >= 1 && parsedChoice <= 4);
+		}
+
+		if (!validInput)
+		{
+			Console.Write("Invalid input. Try again: ");
+		}
+	}
+	while (!validInput);
 }
