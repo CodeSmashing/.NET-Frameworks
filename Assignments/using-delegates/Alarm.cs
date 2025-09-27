@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Reflection;
+﻿using System.Reflection;
+using using_delegates;
 
 /*
  * Oefening: Gebruik van delegates 
@@ -19,16 +19,21 @@ using System.Reflection;
  *	Een absolute voorwaarde:  Op de "menu"-Switch na, mag er geen conditionele statements (if / else) gebruikt worden.  Je zal dus strikt moeten werken met delegates en Timer
 */
 
-Timer timer = new();
+DateTime alarmEnd = DateTime.Now;
+System.Timers.Timer timer = new() { Interval = 1000 };
+double alarmSnooze; // In minutes
+int wakingMethodsChoiceCount = AlarmActions.WakingMethods.Count + 1; // +1 for finishing
+timer.Elapsed += OnTimedEvent;
 
 Console.WriteLine("Welcome to the Alarm application!");
 Console.WriteLine("This application allows you to set an alarm with various options.");
 Console.WriteLine("You can set the alarm time, snooze duration, and choose how you want to be alerted.");
 Console.WriteLine("You can also stop the alarm or snooze it when it goes off.");
+Console.Write(" | ");
 Console.ReadKey();
 Console.Clear();
 
-timerSetup();
+alarmSetup();
 
 while (true)
 {
@@ -40,66 +45,84 @@ while (true)
 	Console.WriteLine("5. Stop Alarm");
 	Console.WriteLine("6. Snooze Alarm");
 	Console.WriteLine("7. Exit");
-	Console.Write("Enter your choice (1-7)\n > ");
+	Console.WriteLine("Enter your choice (1-7)");
+	Console.Write(" > ");
 	_ = int.TryParse(Console.ReadLine(), out int choice);
 	Console.Clear();
 
 	switch (choice)
 	{
 		case 1:
+			timer.Enabled = false;
 			updateEndTime();
 			break;
 		case 2:
+			timer.Enabled = false;
 			updateSnoozeDuration();
 			break;
 		case 3:
+			timer.Enabled = false;
 			updatePrefferedMethods();
 			break;
 		case 4:
-			if (timer.IsRunning)
+			if (timer.Enabled)
 			{
 				Console.WriteLine("Alarm is already running.");
 			}
 			else
 			{
-				timer.IsRunning = true;
-				Console.WriteLine($"Alarm started. It will go off at {timer.EndTimeString()} (HH:MM).");
+				timer.Enabled = true;
+				Console.WriteLine($"Alarm started. It will go off at {alarmEnd} (HH:MM).");
 			}
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
 			break;
 		case 5:
-			if (timer.IsRunning)
+			if (timer.Enabled)
 			{
-				timer.IsRunning = false;
+				timer.Enabled = false;
 				Console.WriteLine("Alarm stopped.");
 			}
 			else
 			{
 				Console.WriteLine("Alarm is not running.");
 			}
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
 			break;
 		case 6:
-			if (timer.IsRunning)
+			if (timer.Enabled)
 			{
-				timer.Snooze();
-				Console.WriteLine($"Alarm snoozed. New alarm time is {timer.EndTimeString()} (HH:MM).");
+				alarmEnd = alarmEnd.AddMinutes(alarmSnooze);
+				Console.WriteLine($"Alarm snoozed. New alarm time is {alarmEnd} (HH:MM).");
 			}
 			else
 			{
 				Console.WriteLine("Alarm is not running.");
 			}
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
 			break;
 		case 7:
+			timer.Enabled = false;
 			Console.WriteLine("Exiting the application. Goodbye!");
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
 			return;
 		default:
 			Console.WriteLine("Invalid choice. Please enter a number between 1 and 7.");
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
 			break;
 	}
-
-	Console.ReadKey();
 }
 
-void timerSetup()
+void alarmSetup()
 {
 	updateEndTime();
 
@@ -107,26 +130,27 @@ void timerSetup()
 
 	updatePrefferedMethods();
 
-	Console.WriteLine("\nAlarm setup complete! The alarm will go off at the set time.");
-	timer.IsRunning = true;
+	timer.Start();
+	Console.WriteLine($"Alarm setup complete! The alarm will go off at {alarmEnd} time.");
+	Console.Write(" | ");
 	Console.ReadKey();
 	Console.Clear();
 }
 
 void updateEndTime()
 {
-	Console.Write("\nAt what time do you want the alarm to go off? (HH:MM, 24-hour format)\n > ");
-	_ = TimeOnly.TryParse(getInput("24-hour").ToString("00:00"), out TimeOnly parsedTime);
-	timer.EndTime = parsedTime;
+	alarmEnd = DateTime.Parse(getInput("alarm-end", "At what time do you want the alarm to go off? (HH:MM, 24-hour format)"));
+	Console.WriteLine($"\nAlarm time set to {alarmEnd:HH:mm}.");
+	Console.Write(" | ");
 	Console.ReadKey();
 	Console.Clear();
 }
 
 void updateSnoozeDuration()
 {
-	Console.Write("\nEnter the snooze duration in minutes (in minutes from 0-1440)\n > ");
-	timer.SnoozeTime = getInput("minutes");
-	Console.WriteLine($"\nSnooze duration set to {timer.SnoozeTime} minutes.");
+	alarmSnooze = double.Parse(getInput("alarm-snooze", "Enter the snooze duration in minutes (from 0-1440)"));
+	Console.WriteLine($"\nSnooze duration set to {alarmSnooze} minutes.");
+	Console.Write(" | ");
 	Console.ReadKey();
 	Console.Clear();
 }
@@ -135,65 +159,56 @@ void updatePrefferedMethods()
 {
 	int wakingMethodChoice = -1;
 
-	KeyValuePair<string, bool> soundMethod = timer.GetWakingMethod("sound");
-	KeyValuePair<string, bool> messageMethod = timer.GetWakingMethod("message");
-	KeyValuePair<string, bool> flashingMethod = timer.GetWakingMethod("flashing");
-
-	Console.WriteLine("\nChoose your preferred methods of waking up:");
-	Console.WriteLine($"1. {soundMethod.Key.ToUpper()}\t-\t{soundMethod.Value}");
-	Console.WriteLine($"2. {messageMethod.Key.ToUpper()}\t-\t{messageMethod.Value}");
-	Console.WriteLine($"3. {flashingMethod.Key.ToUpper()}\t-\t{flashingMethod.Value}");
-	Console.WriteLine("4. View current preferences");
-	Console.WriteLine("5. Done");
-	Console.WriteLine("You can toggle each method by entering its number.");
-
-	while (wakingMethodChoice != 5)
+	// Loop until the user chooses to finish (in this case option 4)
+	while (wakingMethodChoice != wakingMethodsChoiceCount)
 	{
-		Console.Write("\nEnter your choice (1-5): ");
+		int i = 1;
+
+		Console.WriteLine("Choose your preferred methods of waking up:");
+		foreach (var method in AlarmActions.WakingMethods)
+		{
+			Console.WriteLine($"{i++}. {method.Key.ToUpper()}\t-\t{method.Value}");
+		}
+		Console.WriteLine($"{i++}. Done");
+		Console.WriteLine("You can toggle each method by entering its number.");
+		Console.WriteLine($"Enter your choice (1-{wakingMethodsChoiceCount})");
+		Console.Write(" > ");
 		_ = int.TryParse(Console.ReadLine(), out wakingMethodChoice);
+
 		switch (wakingMethodChoice)
 		{
 			case 1:
-				timer.ToggleWakingMethod("sound");
-				Console.WriteLine($"Sound is now set to\t-\t{timer.GetWakingMethod("sound").Value}");
-				break;
 			case 2:
-				timer.ToggleWakingMethod("message");
-				Console.WriteLine($"Message is now set to\t-\t{timer.GetWakingMethod("message").Value}");
-				break;
 			case 3:
-				timer.ToggleWakingMethod("flashing");
-				Console.WriteLine($"Flashing is now set to\t-\t{timer.GetWakingMethod("flashing").Value}");
+				KeyValuePair<string, bool> method = AlarmActions.ToggleWakingMethod(wakingMethodChoice - 1);
+				Console.WriteLine($"{method.Key} is now set to\t-\t{method.Value}");
 				break;
 			case 4:
-				Console.WriteLine("\nCurrent waking method preferences:");
-				Console.WriteLine($"1. {soundMethod.Key.ToUpper()}\t-\t{soundMethod.Value}");
-				Console.WriteLine($"2. {messageMethod.Key.ToUpper()}\t-\t{messageMethod.Value}");
-				Console.WriteLine($"3. {flashingMethod.Key.ToUpper()}\t-\t{flashingMethod.Value}");
-				break;
-			case 5:
 				Console.WriteLine("Finished setting waking methods.");
 				break;
 			default:
-				Console.WriteLine("Invalid choice. Please enter a number between 1 and 3.");
+				Console.WriteLine($"Invalid choice. Please enter a number between 1 and {wakingMethodsChoiceCount}.");
 				break;
 		}
-	}
 
-	Console.ReadKey();
-	Console.Clear();
+		Console.Write(" | ");
+		Console.ReadKey();
+		Console.Clear();
+	}
 }
 
-static double getInput(string option)
+// Function to get and validate user input based on the option
+string getInput(string option, string prompt)
 {
-	string? userInput;
-	double parsedTime = -1;
-	bool validInput = false;
+	string? userInput = null;
+	bool isValid = false;
 
-	while (!validInput)
+	while (!isValid)
 	{
 		try
 		{
+			Console.WriteLine(prompt);
+			Console.Write(" > ");
 			userInput = Console.ReadLine();
 			ArgumentNullException.ThrowIfNull(userInput);
 			ArgumentException.ThrowIfNullOrEmpty(userInput);
@@ -201,37 +216,67 @@ static double getInput(string option)
 
 			switch (option)
 			{
-				case "minutes":
-					_ = double.TryParse(userInput, out double minutes);
-					ArgumentOutOfRangeException.ThrowIfNegative(minutes, nameof(minutes));
-					ArgumentOutOfRangeException.ThrowIfGreaterThan(minutes, 1440, nameof(minutes));
+				case "alarm-snooze":
+					_ = double.TryParse(userInput, out double parsedAlarmSnooze);
+					ArgumentOutOfRangeException.ThrowIfNegative(parsedAlarmSnooze, nameof(parsedAlarmSnooze));
+					ArgumentOutOfRangeException.ThrowIfGreaterThan(parsedAlarmSnooze, 1440, nameof(parsedAlarmSnooze));
 
-					parsedTime = minutes;
-					validInput = true;
+					isValid = true;
 					break;
-				case "24-hour":
-					ArgumentOutOfRangeException.ThrowIfNegative(int.Parse(userInput.Replace(":", "")), nameof(userInput));
-					ArgumentOutOfRangeException.ThrowIfGreaterThan(int.Parse(userInput.Replace(":", "")), 2459, nameof(userInput));
-					ArgumentOutOfRangeException.ThrowIfLessThan(userInput.Length, 5, nameof(userInput));
-					ArgumentOutOfRangeException.ThrowIfNotEqual(userInput.IndexOf(':'), 2, nameof(userInput));
-					_ = double.TryParse(userInput.Replace(":", ""), out double time);
+				case "alarm-end":
+					_ = DateTime.TryParse(userInput, out DateTime parsedAlarmEnd);
+					ArgumentOutOfRangeException.ThrowIfLessThan(parsedAlarmEnd, DateTime.Now, nameof(parsedAlarmEnd));
+					ArgumentException.Equals(parsedAlarmEnd.TimeOfDay.TotalMinutes, DateTime.Now.TimeOfDay.TotalMinutes);
 
-					parsedTime = time;
-					validInput = true;
+					isValid = true;
 					break;
 				default:
 					Console.WriteLine("Invalid option specified.");
+					Console.Write(" | ");
+					Console.ReadKey();
+					Console.Clear();
 					break;
 			}
 		}
 		catch (Exception e)
 		{
+			// Possible exception messages if I could use conditional statements:
 			//"Snooze time must be a non-negative number."
 			//"Invalid input. Please enter the time in HH:MM format (24-hour)."
 			//"Snooze time cannot exceed 1440 minutes (24 hours)."
 			Console.WriteLine($"Error: {e.Message}");
-			validInput = false;
+			Console.Write(" | ");
+			Console.ReadKey();
+			Console.Clear();
+			isValid = false;
 		}
 	}
-	return parsedTime;
+	return userInput!;
+}
+
+// Define what happens when the timer elapses
+void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+{
+	TimeSpan timeUntil = alarmEnd - DateTime.Now;
+
+	if (timeUntil.TotalSeconds <= 0)
+	{
+		timer.Enabled = false;
+		Console.WriteLine("\nAlarm is going off NOW!");
+		foreach (var method in AlarmActions.WakingMethods)
+		{
+			if (method.Value)
+			{
+				MethodInfo? methodInfo = typeof(AlarmActions).GetMethod(method.Key, BindingFlags.Public | BindingFlags.Static);
+				methodInfo?.Invoke(null, null);
+			}
+		}
+		// Would like some later "\nPress 'S' to stop the alarm or 'Z' to snooze."
+		Console.WriteLine($"\nAlarm went off at {alarmEnd:HH:mm}.");
+		Console.Write(" | ");
+	}
+	else
+	{
+		Console.WriteLine($"Time until alarm: {timeUntil.Hours} hours, {timeUntil.Minutes} minutes, {timeUntil.Seconds} seconds.");
+	}
 }
