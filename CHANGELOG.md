@@ -14,9 +14,14 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - New [Use Nullables](Assignments/use-nullables) assignment.
 - New [Administration app](Assignments/administration-app) assignment.
 
+## [0.5.1] - 2025-10-09
+
 ### Changed
 
-- Updated [Working with arrays](Assignments/working-with-arrays) assignment.
+- In the [Working with arrays](Assignments/working-with-arrays) assignment, refactored the Program class to:
+	- Explicitly add the namespace "working_with_arrays".
+	- Explicitly add the private static void Main() method.
+	- Use the GetInput() method from [InputHelper.cs](Assignments/Utilities/InputHelper.cs) to replace the previous getInput() method.
 
 ## [0.5.0] - 2025-10-09
 
@@ -138,6 +143,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - [Git Attributes](.gitattributes).
 - [MIT license](LICENSE).
 
+[0.5.1]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.1
 [0.5.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.0
 [0.4.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.4.0
 [0.3.1]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.3.1
