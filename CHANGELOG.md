@@ -11,8 +11,15 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 
 - New [Conditions and Iterations](Assignments/conditions-and-iterations) assignment.
 - New [Stack with methods](Assignments/stack-with-methods) assignment.
-- New [Use Nullables](Assignments/use-nullables) assignment.
 - New [Administration app](Assignments/administration-app) assignment.
+
+## [0.6.0] - 2025-10-09
+
+### Added
+
+- Initial commit for the "use-nullables" assignment. Includes a C# console application that demonstrates the use of nullable types and null-coalescing operators, along with supporting project and solution files. This includes:
+	- A [Program.cs](Assignments/use-nullables/Program.cs) class to contain the Main method of the assignment and handle info displaying.
+	- A [Worker.cs](Assignments/use-nullables/Worker.cs) class to represent a worker with properties like Name, YearsInSales, ... and methods related to and once for calculating their bonus based on years in service.
 
 ## [0.5.2] - 2025-10-09
 
@@ -36,7 +43,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 
 ### Added
 
-- Initial commit for the 'classes-and-events' assignment. Includes a C# console application that demonstrates the use of classes and events, along with supporting project and solution files. This includes:
+- Initial commit for the "classes-and-events" assignment. Includes a C# console application that demonstrates the use of classes and events, along with supporting project and solution files. This includes:
 	- A [Book.cs](Assignments/classes-and-events/Book.cs) class to represent a book with properties like title, author, and ISBN.
 	- A [Magazine.cs](Assignments/classes-and-events/Magazine.cs) class to represent a magazine with the [Book.cs](Assignments/classes-and-events/Book.cs) properties inherited with an additional Period property to indicate the publication frequency.
 	- A [PublicationPeriod.cs](Assignments/classes-and-events/PublicationPeriod.cs) enum to define possible publication periods (e.g., Daily, Weekly, Monthly).
@@ -109,7 +116,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 
 ### Added
 
-- Initial commit for the 'using-delegates' assignment. Includes a C# console application that is incomplete and requires further development.
+- Initial commit for the "using-delegates" assignment. Includes a C# console application that is incomplete and requires further development.
  (In future updates, meant to demonstrate the use of delegates to encapsulate method references, along with supporting project and solution files.)
 
 ## [0.2.1] - 2025-09-23
@@ -127,13 +134,13 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 
 ### Added
 
-- Initial commit for the 'working-with-arrays' assignment. Includes a C# console application that demonstrates dynamic array resizing by appending user input, along with supporting project and solution files.
+- Initial commit for the "working-with-arrays" assignment. Includes a C# console application that demonstrates dynamic array resizing by appending user input, along with supporting project and solution files.
 
 ## [0.1.0] - 2025-09-22
 
 ### Changed
 
-- Initial commit for the 'conditions-and-iterations' assignment. Includes a C# console application that demonstrates basic input validation and conditional logic, along with supporting project and solution files.
+- Initial commit for the "conditions-and-iterations" assignment. Includes a C# console application that demonstrates basic input validation and conditional logic, along with supporting project and solution files.
 
 ## [0.0.1] - 2025-09-22
 
@@ -152,6 +159,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - [Git Attributes](.gitattributes).
 - [MIT license](LICENSE).
 
+[0.6.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.6.0
 [0.5.2]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.2
 [0.5.1]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.1
 [0.5.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.0
