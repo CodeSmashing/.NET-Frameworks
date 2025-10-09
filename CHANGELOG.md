@@ -9,10 +9,25 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 
 ### Added
 
-- New [Classes and Events](Assignments/classes-and-events) assignment.
 - New [Conditions and Iterations](Assignments/conditions-and-iterations) assignment.
 - New [Stack with methods](Assignments/stack-with-methods) assignment.
 - New [Use Nullables](Assignments/use-nullables) assignment.
+- New [Administration app](Assignments/administration-app) assignment.
+
+### Changed
+
+- Updated [Working with arrays](Assignments/working-with-arrays) assignment.
+
+## [0.5.0] - 2025-10-09
+
+### Added
+
+- Initial commit for the 'classes-and-events' assignment. Includes a C# console application that demonstrates the use of classes and events, along with supporting project and solution files. This includes:
+	- A [Book.cs](Assignments/classes-and-events/Book.cs) class to represent a book with properties like title, author, and ISBN.
+	- A [Magazine.cs](Assignments/classes-and-events/Magazine.cs) class to represent a magazine with the [Book.cs](Assignments/classes-and-events/Book.cs) properties inherited with an additional Period property to indicate the publication frequency.
+	- A [PublicationPeriod.cs](Assignments/classes-and-events/PublicationPeriod.cs) enum to define possible publication periods (e.g., Daily, Weekly, Monthly).
+	- A [Order.cs](Assignments/classes-and-events/Order.cs) class to represent an order with properties like Item, DateOrder, Quantity, ... and an event OrderPlaced that is triggered when an order is placed.
+	- A [Program.cs](Assignments/classes-and-events/Program.cs) class to contain the Main method of the assignment and handle user interaction.
 
 ## [0.4.0] - 2025-10-01
 
@@ -123,6 +138,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - [Git Attributes](.gitattributes).
 - [MIT license](LICENSE).
 
+[0.5.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.0
 [0.4.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.4.0
 [0.3.1]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.3.1
 [0.3.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.3.0

@@ -482,3 +482,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Final project .NET
+/GardenPlanner
+
+# Teacher follow-along project
+/Assignments/agenda
