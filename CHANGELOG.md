@@ -14,6 +14,15 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - New [Use Nullables](Assignments/use-nullables) assignment.
 - New [Administration app](Assignments/administration-app) assignment.
 
+## [0.5.2] - 2025-10-09
+
+### Changed
+
+- In the [Conditions and Iterations](Assignments/conditions-and-iterations) assignment, refactored the Program class to:
+	- Explicitly add the namespace "conditions_and_iterations".
+	- Explicitly add the private static void Main() method.
+	- Use the GetInput() method from [InputHelper.cs](Assignments/Utilities/InputHelper.cs) to replace the previous getInput() method.
+
 ## [0.5.1] - 2025-10-09
 
 ### Changed
@@ -143,6 +152,7 @@ and this project (tries) to adhere to [Semantic Versioning](https://semver.org/s
 - [Git Attributes](.gitattributes).
 - [MIT license](LICENSE).
 
+[0.5.2]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.2
 [0.5.1]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.1
 [0.5.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.5.0
 [0.4.0]: https://github.com/CodeSmashing/.NET-Frameworks/releases/tag/v0.4.0
