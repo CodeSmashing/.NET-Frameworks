@@ -15,8 +15,7 @@ namespace Utilities {
 
 			while (!isValid) {
 				try {
-					Console.WriteLine(prompt);
-					Console.Write(" > ");
+					Console.Write(prompt + "\n > ");
 					userInput = Console.ReadLine();
 
 					ArgumentNullException.ThrowIfNull(userInput);
@@ -30,7 +29,7 @@ namespace Utilities {
 					// If no exception was thrown, the input is valid
 					isValid = true;
 				} catch (Exception e) {
-					Console.WriteLine($"Error: {e.Message}");
+					Console.WriteLine($"\nError: {e.Message}");
 					WriteReadClear(" | ");
 					isValid = false;
 				}
